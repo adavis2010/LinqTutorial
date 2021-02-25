@@ -4,6 +4,30 @@ using System.Linq;
 namespace LinqTutorial {
     class Program {
         static void Main(string[] args) {
+            
+            var customers = new Customer[] {
+                new Customer {Id = 1, Name = "Max"},
+                new Customer {Id = 2, Name = "Jimmy Johns"}
+
+            };
+            var orders = new Order[] {
+                new Order { Id = 1, Total = 100m, CustId =2},
+                new Order {Id = 2, Total = 200m, CustId =3 },
+                new Order {Id = 3, Total = 300m, CustId = 2 }
+            };
+
+            var custord = from c in customers
+                          join o in orders
+                          on c.Id equals o.CustId
+                          orderby o.Total descending
+                          select new {
+                              o.Id, c.Name, o.Total
+                          };
+
+
+
+
+
             //1st exercise we did using Linq
             var numbers = new int[] {
                 8927, 2150, 2883, 2221, 3643, 4126, 5256, 9275, 7016, 1169,
@@ -29,38 +53,39 @@ namespace LinqTutorial {
 
 
             //Query Syntax get numbers greater than or equal to 2500 and LTE 7500 EXERCISE 1
-            var ex1= from nbr in numbers
-                         where nbr >= 2500 && nbr <= 7500
-                         orderby nbr
-                         select nbr;
+            var ex1 = from nbr in numbers
+                      where nbr >= 2500 && nbr <= 7500
+                      orderby nbr
+                      select nbr;
 
             //Use Method Syntax for EXERCISE 1
 
             var ex1a = numbers.Where(nbr => nbr <= 2500 && nbr <= 7500)
                 .OrderBy(nbr => nbr).ToList();
-                  
+
 
             //Query syntax less than 2000 and greater than 8000 sort by descending order EXERCISE 2
             var ex2 = from nbr in numbers
-                       where nbr < 2000 || nbr > 8000
-                       orderby nbr descending
-                       select nbr;
+                      where nbr < 2000 || nbr > 8000
+                      orderby nbr descending
+                      select nbr;
 
             //Use Method Syntax for EXERCISE 2 (change variable)
             var ex2a = numbers.Where(nbr => nbr < 2000 || nbr > 8000)
-            .OrderByDescending(nbr=>nbr).ToList();
+            .OrderByDescending(nbr => nbr).ToList();
 
             //Query Syntax nbrs between 1500 and 3000 or 6500 and 8500 EXERCISE 3
             var ex3 = from nbr in numbers
-                       where (nbr > 1500 && nbr < 3000)||(nbr > 6500 && nbr < 8500)
-                       orderby nbr 
-                       select nbr;
+                      where (nbr > 1500 && nbr < 3000) || (nbr > 6500 && nbr < 8500)
+                      orderby nbr
+                      select nbr;
 
             //Use Method Syntax on EXERCISE 3 (change variable)
-          var ex3a = numbers.Where(nbr => (nbr > 1500 && nbr < 3000)||(nbr > 6500 && nbr > 8500))
-                .OrderBy(nbr => nbr).ToList();
+            var ex3a = numbers.Where(nbr => (nbr > 1500 && nbr < 3000) || (nbr > 6500 && nbr > 8500))
+                  .OrderBy(nbr => nbr).ToList();
 
             //Query Syntax: sum the numbers between 1500 and 3000 or 6500 and 8500 EXERCISE 4(wrap whole query in () and them .Sum, add, subtract etc) changed variable name = var ex3aa
+            //HOW TO USE QUERY SYNTAX AND METHOD SYNTAX TOGETHER!!
             var ex3aa = (from nbr in numbers
                          where (nbr > 1500 && nbr < 3000) || (nbr > 6500 && nbr < 8500)
                          orderby nbr
